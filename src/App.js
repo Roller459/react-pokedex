@@ -18,11 +18,21 @@ function App() {
     if (pokemonId !== "") getPokemonById(pokemonId, setPokemon);
   }, [pokemonId]);
 
-  console.log({ pokemon, pokemonId });
-
   function setPokemonIdInInput(event) {
     setPokemonId(event.target.value);
   }
+
+  let typos = <></>;
+  if (pokemon) {
+    typos = pokemon.types.map((type) => (
+      <p>
+        <span>{type.slot} </span>
+        <span>{type.type.name}</span>
+      </p>
+    ));
+  }
+
+  console.log({ pokemon, pokemonId });
 
   return (
     <div className="App">
@@ -34,6 +44,7 @@ function App() {
       {pokemon !== null ? (
         <>
           <p>Name: {pokemon.name}</p>
+          <div>{typos}</div>
           <img
             src={pokemon.sprites.front_shiny}
             alt="pokemon"
