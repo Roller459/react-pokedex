@@ -2,6 +2,14 @@ import { useEffect, useState } from "react";
 
 import logo from "./logo.svg";
 import "./App.css";
+import Chip from "@mui/material/Chip";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Container from "@mui/material/Container";
+import { Divider, Stack } from "@mui/material";
 
 function getPokemonById(id, setPokemon) {
   fetch(`https://pokeapi.co/api/v2/pokemon/${id}`)
@@ -22,40 +30,52 @@ function App() {
     setPokemonId(event.target.value);
   }
 
-  let typos = <></>;
-  if (pokemon) {
-    typos = pokemon.types.map((type) => (
-      <p>
-        <span>{type.slot} </span>
-        <span>{type.type.name}</span>
-      </p>
-    ));
-  }
-
   console.log({ pokemon, pokemonId });
 
   return (
-    <div className="App">
+    <Container maxWidth="sm" className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <label>PokemonId </label>
-      <input type="number" min="1" max="898" onChange={setPokemonIdInInput} />
+      <TextField
+        sx={{ my: 3 }}
+        label="PokemonId"
+        variant="outlined"
+        type="number"
+        min="1"
+        max="898"
+        onChange={setPokemonIdInInput}
+      />
       {pokemon !== null ? (
-        <>
-          <p>Name: {pokemon.name}</p>
-          <div>{typos}</div>
-          <img
-            src={pokemon.sprites.front_shiny}
-            alt="pokemon"
-            width="300"
-            height="300"
-          />
-        </>
+        <Card>
+          <CardContent>
+            <Typography variant="h3" component="h2" xs={{}}>
+              {pokemon.name}
+            </Typography>
+            <Box width="100%">
+              <Stack
+                direction="row"
+                justifyContent="center"
+                divider={<Divider orientation="vertical" flexItem />}
+                spacing={2}
+              >
+                {pokemon.types.map((type) => (
+                  <Chip label={type.type.name} color="secondary" />
+                ))}
+              </Stack>
+            </Box>
+            <img
+              src={pokemon.sprites.front_shiny}
+              alt="pokemon"
+              width="300"
+              height="300"
+            />
+          </CardContent>
+        </Card>
       ) : (
         <>Loading....</>
       )}
-    </div>
+    </Container>
   );
 }
 
